@@ -42,6 +42,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+**/cmake-build-*/
 
 # CARMA: Ignore guidance auto-generated VersionID files
 carma/guidance/src/main/resources/version
