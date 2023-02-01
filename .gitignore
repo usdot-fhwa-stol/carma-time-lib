@@ -1,3 +1,36 @@
+# General files
+*.bak
+logs
+.project
+*~
+myClock.bin
+/*.tar.gz
+*.class
+**/bin
+
+# Java
+.classpath
+.settings
+gradle.properties
+.gradle
+
+# Python
+**/__pycache__
+
+# ignore build directories
+build
+target
+devel
+
+# ignore Intellij project files and dirs
+*.ipr
+*.iws
+*.iml
+.idea
+/src/ruby/*
+!/src/ruby/*.rb
+
+# CMake Files
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -9,3 +42,17 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+
+# CARMA: Ignore guidance auto-generated VersionID files
+carma/guidance/src/main/resources/version
+carma/guidance/out/**
+carma/route/out/**
+
+# CARMA: Ignore sensitive data files and directories
+srx_can_driver
+srx_objects
+truck_can_driver
+**/J2735_201603.asn1
+
+# exceptions
+!hooks/build
