@@ -72,32 +72,30 @@ void CarmaClock::sleep_until(timeStampMilliseconds future_time) {
     if (!_is_initialized) {
         throw std::runtime_error("Clock is not initialized!");
     }
-    // determine if we are at the time or not and skip sleep if past
-    if (future_time > _current_time) {
-        if (_is_simulation_mode) {
+    if (_is_simulation_mode) {
+        // determine if we are at the time or not and skip sleep if past
+        if (future_time > _current_time) {
+            // create the CV and mutex to use
+            sleepCVPair sleepCVPairValue = std::make_pair(
+                std::make_shared<std::condition_variable>(),
+                std::make_shared<std::mutex>()
+            );
             {
-                // create the CV and mutex to use
-                sleepCVPair sleepCVPairValue = std::make_pair(
-                    std::make_shared<std::condition_variable>(),
-                    std::make_shared<std::mutex>()
-                );
-                {
-                    // add the time and the values to our list
-                    std::unique_lock lk(_sleep_mutex);
-                    _sleep_holder.push_back(sleepValuePair(
-                        future_time, sleepCVPairValue
-                    ));
-                }
-                // wait for something to notify that this thread should proceed
-                std::unique_lock lock(*sleepCVPairValue.second);
-                sleepCVPairValue.first->wait(lock);
+                // add the time and the values to our list
+                std::unique_lock lk(_sleep_mutex);
+                _sleep_holder.push_back(sleepValuePair(
+                    future_time, sleepCVPairValue
+                ));
             }
-        } else {
-            // do system sleep
-            using namespace std::chrono;
-            std::chrono::system_clock::time_point futureTimePoint{std::chrono::milliseconds{future_time}};
-            std::this_thread::sleep_until(futureTimePoint);
+            // wait for something to notify that this thread should proceed
+            std::unique_lock lock(*sleepCVPairValue.second);
+            sleepCVPairValue.first->wait(lock);
         }
+    } else {
+        // do system sleep
+        using namespace std::chrono;
+        std::chrono::system_clock::time_point futureTimePoint{std::chrono::milliseconds{future_time}};
+        std::this_thread::sleep_until(futureTimePoint);
     }
 }
 

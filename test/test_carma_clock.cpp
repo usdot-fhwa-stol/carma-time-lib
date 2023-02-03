@@ -21,6 +21,21 @@ TEST(test_carma_clock, test_system_time_initialization)
     EXPECT_NEAR(0, msCount, 5);
 }
 
+TEST(test_carma_clock, test_system_time_sleep_until)
+{
+    // try a real clock
+    CarmaClock clock;
+    clock.wait_for_initialization();
+    auto start = system_clock::now();
+    auto futureTimeTp = start + std::chrono::milliseconds(SYSTEM_SLEEP_TIME);
+    auto futureTimeMs = duration_cast< milliseconds>(futureTimeTp.time_since_epoch()).count();
+    clock.sleep_until(futureTimeMs);
+    auto after = system_clock::now();
+    auto msCount = duration_cast<milliseconds>(after - start).count();
+    // should have slept approximately what we asked
+    EXPECT_NEAR(SYSTEM_SLEEP_TIME, msCount, 5);
+}
+
 TEST(test_carma_clock, test_sim_time_initialization)
 {
     // try a sim clock
