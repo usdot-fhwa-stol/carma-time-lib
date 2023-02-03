@@ -48,30 +48,39 @@ namespace fwha_stol::lib::time {
         bool is_simulation_mode();
 
         // Time management updates
-        void update_simtime(timestamp current_time);
+        void update_sim_time(timestamp current_sim_time);
 
         // CarmaScheduler interface
         void wait_for_initialization();
 
         void sleep(duration);
 
-        void register_periodic_callback(duration, fcn, num_repititions);
+        void register_periodic_callback(duration periodic_delay, void_callback fcn, int num_repititions);
 
     private:
         // Initialization
-        void initialize_with_simulation();
+        void initialize_with_simulation(timestamp current_sim_time);
 
         void initialize_without_simulation();
 
     private:
         // System clock reference
-        std::shared_ptr <reference_clock_type> _clock;
+        std::shared_ptr<reference_clock_type> _reference_clock;
 
         // Current simulation time
-        timestamp current_time;
+        timestamp _current_sim_time;
 
         // Simulation mode
         bool _is_simulation_mode;
+
+        // Scheduling members
+        void_callback _periodic_callback;
+        duration _periodic_delay;
+        int _periodic_num_repetitions;
+        bool _is_initialized;
+
+        // Constants
+        static final duration DEFAULT_LOOP_DELAY;
     };
 
 }
