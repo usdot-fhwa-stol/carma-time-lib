@@ -50,7 +50,7 @@ public:
 public:
     // Time interrogation
     timeStampSeconds nowInSeconds();
-    timeStampMilliseconds nowInMilliseconds();
+    timeStampMilliseconds nowInMilliseconds() const;
 
 public:
     // Time management updates
@@ -70,7 +70,7 @@ public:
 
 private:
     // Current simulation time
-    timeStampMilliseconds _current_time;
+    timeStampMilliseconds _current_time = 0;
 
     // Simulation mode
     bool _is_simulation_mode;
