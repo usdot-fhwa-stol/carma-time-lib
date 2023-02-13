@@ -83,9 +83,7 @@ void CarmaClock::sleep_until(timeStampMilliseconds future_time) {
             {
                 // add the time and the values to our list
                 std::unique_lock lk(_sleep_mutex);
-                _sleep_holder.emplace_back(sleepValuePair(
-                    future_time, sleepCVPairValue
-                ));
+                _sleep_holder.emplace_back(future_time, sleepCVPairValue);
             }
             // wait for something to notify that this thread should proceed
             std::unique_lock lock(*sleepCVPairValue.second);
