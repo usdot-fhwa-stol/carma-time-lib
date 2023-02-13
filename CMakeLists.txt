@@ -12,6 +12,7 @@ add_library(${PROJECT_NAME} SHARED)
 
 include(CommonSource)
 include(Testing)
+include(CodeCoverage)
 include(InstallingGeneral)
 include(InstallingConfigs)
 include(Packing)
