@@ -165,6 +165,10 @@ TEST(test_carma_clock, test_sim_time_sleep_until_multiple)
     std::thread t2([&clock, simTimeNow]() {
         clock.sleep_until(simTimeNow + SECOND_SLEEP_DURATION);
     });
+    constexpr int THIRD_SLEEP_DURATION = 2;
+    std::thread t3([&clock, simTimeNow]() {
+        clock.sleep_until(simTimeNow + THIRD_SLEEP_DURATION);
+    });
     {
         t1.join();
         auto after = system_clock::now();
@@ -173,11 +177,19 @@ TEST(test_carma_clock, test_sim_time_sleep_until_multiple)
         EXPECT_NEAR(SYSTEM_SLEEP_TIME, msCount, 5);
     }
     {
+        // check t3 first as it should end before t2
+        t3.join();
+        auto after = system_clock::now();
+        auto msCount = duration_cast<milliseconds>(after - start).count();
+        // should match up sleep periods for this thread
+        EXPECT_NEAR(SYSTEM_SLEEP_TIME * THIRD_SLEEP_DURATION, msCount, 5);
+    }
+    {
         t2.join();
         auto after = system_clock::now();
         auto msCount = duration_cast<milliseconds>(after - start).count();
-        // should match up with one sleep period
-        EXPECT_NEAR(SYSTEM_SLEEP_TIME * SECOND_SLEEP_DURATION, msCount, 5);
+        // should match up sleep periods for this thread
+        EXPECT_NEAR(SYSTEM_SLEEP_TIME * SECOND_SLEEP_DURATION, msCount, 10);
     }
     t.join();
 }
