@@ -6,7 +6,9 @@ on:
 
 jobs:
   build-package:
-    uses: usdot-fhwa-stol/actions/.github/workflows/cpp-module-build.yml@main
+    uses: usdot-fhwa-stol/actions/.github/workflows/cpp-module-build.yml@dynamic_image_name
+    with:
+      build-image-tag: coverage_exclude_throw_arcs
     secrets:
       aws-access-key-id: ${{ secrets.APT_REPO_AWS_ACCESS_KEY_ID }}
       aws-secret-access-key: ${{ secrets.APT_REPO_AWS_SECRET_ACCESS_KEY }}
