@@ -11,6 +11,7 @@ jobs:
     uses: usdot-fhwa-stol/actions/.github/workflows/sonar-scanner-cpp.yml@dynamic_image_name
     with:
       sonar-project-key: usdot-fhwa-stol_carma-time-lib
+      build-image-tag: coverage_exclude_throw_arcs
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       sonarcloud-token: ${{ secrets.SONAR_TOKEN }}
