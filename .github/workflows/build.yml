@@ -6,9 +6,7 @@ on:
 
 jobs:
   build-package:
-    uses: usdot-fhwa-stol/actions/.github/workflows/cpp-module-build.yml@ce10dc925a08a11e98f76596f55846d3f13573e1
-    with:
-      build-image-tag: debian_version_match_so
+    uses: usdot-fhwa-stol/actions/.github/workflows/cpp-module-build.yml@main
     secrets:
       aws-access-key-id: ${{ secrets.APT_REPO_AWS_ACCESS_KEY_ID }}
       aws-secret-access-key: ${{ secrets.APT_REPO_AWS_SECRET_ACCESS_KEY }}
