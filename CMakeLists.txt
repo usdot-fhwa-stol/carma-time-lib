@@ -10,6 +10,7 @@ project(carma-clock
 
 add_library(${PROJECT_NAME} SHARED)
 
+#include("include")
 include(CommonSource)
 include(Testing)
 include(InstallingGeneral)
