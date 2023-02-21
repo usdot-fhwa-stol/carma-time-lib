@@ -13,6 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+// TODO Ensure license at the top is correct.
 
 #pragma once
 
@@ -25,9 +26,9 @@
 
 namespace fwha_stol::lib::time {
 
-typedef std::chrono::system_clock reference_clock_type;
-typedef std::chrono::time_point <reference_clock_type> timestamp;
-typedef std::chrono::duration <reference_clock_type> duration;
+//typedef std::chrono::system_clock reference_clock_type;
+//typedef std::chrono::time_point <reference_clock_type> timestamp;  //TODO Should we bother to use system-agnostic representation?
+//typedef std::chrono::duration <reference_clock_type> duration;
 
 using timeStampSeconds = uint32_t;
 using timeStampMilliseconds = uint64_t;
@@ -62,11 +63,13 @@ public:
 
     void disable_simulation_mode();
 
-    inline bool is_simulation_mode() const {return _is_simulation_mode; };
+    inline bool is_simulation_mode() const { return _is_simulation_mode; };
 
     void wait_for_initialization();
 
     void sleep_until(timeStampMilliseconds future_time);
+
+    // TODO Do we want register_periodic_callback?
 
 private:
     // Current simulation time
@@ -83,6 +86,9 @@ private:
     // sleep related items
     std::mutex _sleep_mutex;
     std::vector <sleepValuePair> _sleep_holder;
+
+//    // System clock reference
+//    std::shared_ptr<reference_clock_type> _reference_clock;
 };
 
 }
