@@ -2,6 +2,14 @@
 
 The CARMA Time Library is a focused library providing classes and utilities which enable a consuming project to synchronize mock time with the CARMA simulation framework.
 
+# CI Status
+
+These badges are for the default branch only.
+
+[![Build Workflow](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/build.yml/badge.svg)](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/build.yml)
+
+[![Sonar Workflow](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/sonar-scanner.yml/badge.svg)](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/sonar-scanner.yml)
+
 # Architecture
 
 The CarmaClock class contains an internal representation for time which serves as a replacement for the epoch tracked by the system clock, or any other related time-keeping machinery.

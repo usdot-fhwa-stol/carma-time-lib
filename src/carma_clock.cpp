@@ -21,15 +21,15 @@
 
 namespace fwha_stol::lib::time {
 
-CarmaClock::CarmaClock(bool simulation_mode) : _current_time(), _is_simulation_mode(simulation_mode) {
+CarmaClock::CarmaClock(bool simulation_mode) : _is_simulation_mode(simulation_mode) {
     // ready to go if not sim mode
     _is_initialized = ! _is_simulation_mode;
 }
 
-timeStampMilliseconds CarmaClock::nowInMilliseconds() {
+timeStampMilliseconds CarmaClock::nowInMilliseconds() const {
     if (_is_simulation_mode) {
         if (!_is_initialized) {
-            throw std::runtime_error("Clock is not initialized!");
+            throw std::invalid_argument("Clock is not initialized!");
         }
         return _current_time;
     } else {
@@ -64,13 +64,13 @@ void CarmaClock::update(timeStampMilliseconds current_time) {
 void CarmaClock::wait_for_initialization() {
     if (!_is_initialized) {
         std::unique_lock lock(_initialization_mutex);
-        _initialization_cv.wait(lock);
+        _initialization_cv.wait(lock, [this] { return _is_initialized; });
     }
 }
 
 void CarmaClock::sleep_until(timeStampMilliseconds future_time) {
     if (!_is_initialized) {
-        throw std::runtime_error("Clock is not initialized!");
+        throw std::invalid_argument("Clock is not initialized!");
     }
     if (_is_simulation_mode) {
         // determine if we are at the time or not and skip sleep if past
@@ -83,9 +83,7 @@ void CarmaClock::sleep_until(timeStampMilliseconds future_time) {
             {
                 // add the time and the values to our list
                 std::unique_lock lk(_sleep_mutex);
-                _sleep_holder.push_back(sleepValuePair(
-                    future_time, sleepCVPairValue
-                ));
+                _sleep_holder.emplace_back(future_time, sleepCVPairValue);
             }
             // wait for something to notify that this thread should proceed
             std::unique_lock lock(*sleepCVPairValue.second);
