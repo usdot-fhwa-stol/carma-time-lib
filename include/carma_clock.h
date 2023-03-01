@@ -16,16 +16,17 @@
 
 #pragma once
 
-#include <cstdint>
-#include <chrono>
+#include <memory>
+#include <condition_variable>
+#include <mutex>
+#include <vector>
 
-namespace fwha_stol {
-namespace lib {
-namespace time {
+namespace fwha_stol::lib::time {
 
-typedef std::chrono::system_clock reference_clock_type;
-typedef std::chrono::time_point <reference_clock_type> timestamp;
-typedef std::chrono::duration <reference_clock_type> duration;
+using timeStampSeconds = uint32_t;
+using timeStampMilliseconds = uint64_t;
+using sleepCVPair = std::pair<std::shared_ptr<std::condition_variable>, std::shared_ptr<std::mutex>>;
+using sleepValuePair = std::pair<timeStampMilliseconds, sleepCVPair>;
 
 /**
  * Provides access to current time and various utilities. If a simulation is enabled, all time-related
@@ -36,42 +37,41 @@ typedef std::chrono::duration <reference_clock_type> duration;
  */
 class CarmaClock {
 public:
-    CarmaClock(bool enable_simulation_mode);
+    explicit CarmaClock(bool simulation_mode = false);
 
-    CarmaClock(bool enable_simulation_mode, timestamp current_time);
-
-    ~CarmaClock();
+    ~CarmaClock() = default;
 
 public:
     // Time interrogation
-    timestamp now();
+    timeStampSeconds nowInSeconds();
+    timeStampMilliseconds nowInMilliseconds() const;
 
 public:
     // Time management updates
-    void update(timestamp current_time);
+    void update(timeStampMilliseconds current_time);
 
 public:
-    // Toggle simulation
-    void enable_simulation_mode();
+    inline bool is_simulation_mode() const {return _is_simulation_mode; };
 
-    void disable_simulation_mode();
+    void wait_for_initialization();
 
-    bool is_simulation_mode();
-
-private:
-    initialize();
+    void sleep_until(timeStampMilliseconds future_time);
 
 private:
-    // System clock reference
-    std::shared_ptr <reference_clock_type> _clock;
-
     // Current simulation time
-    timestamp current_time;
+    timeStampMilliseconds _current_time = 0;
 
     // Simulation mode
     bool _is_simulation_mode;
+
+    // Initialization variables
+    bool _is_initialized;
+    std::mutex _initialization_mutex;
+    std::condition_variable _initialization_cv;
+
+    // sleep related items
+    std::mutex _sleep_mutex;
+    std::vector <sleepValuePair> _sleep_holder;
 };
 
-}
-}
 }
