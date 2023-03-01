@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "carma_clock_example.h"
+#include "carma_clock.h"
 
 #include <thread>
 
