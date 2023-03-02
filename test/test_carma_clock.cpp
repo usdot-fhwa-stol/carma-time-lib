@@ -77,14 +77,26 @@ TEST(test_carma_clock, test_sim_time_not_initialized)
 {
     // try a sim clock
     CarmaClock clock(true);
-    bool execptionThrown = false;
-    try {
-        auto timeValue = clock.nowInMilliseconds();
-    } catch (std::exception & e) {
-        execptionThrown = true;
+    {
+        bool execptionThrown = false;
+        try {
+            auto timeValue = clock.nowInMilliseconds();
+        } catch (std::exception & e) {
+            execptionThrown = true;
+        }
+        // should have thrown exception if no initialize occurred
+        EXPECT_TRUE(execptionThrown);
     }
-    // should have thrown exception if no initialize occurred
-    EXPECT_TRUE(execptionThrown);
+    {
+        bool execptionThrown = false;
+        try {
+            auto timeValue = clock.nowInSeconds();
+        } catch (std::exception & e) {
+            execptionThrown = true;
+        }
+        // should have thrown exception if no initialize occurred
+        EXPECT_TRUE(execptionThrown);
+    }
 }
 
 TEST(test_carma_clock, test_sim_time_not_initialized_for_sleep)
@@ -192,4 +204,27 @@ TEST(test_carma_clock, test_sim_time_sleep_until_multiple)
         EXPECT_NEAR(SYSTEM_SLEEP_TIME * SECOND_SLEEP_DURATION, msCount, 10);
     }
     t.join();
+}
+
+TEST(test_carma_clock, test_time_in_seconds_simulation)
+{
+    // try a sim clock
+    CarmaClock clock(true);
+    clock.update(1000);
+    auto secondsConunt = clock.nowInSeconds();
+    EXPECT_EQ(1, secondsConunt);
+    // check rounding as should always go down
+    clock.update(1999);
+    secondsConunt = clock.nowInSeconds();
+    EXPECT_EQ(1, secondsConunt);
+}
+
+TEST(test_carma_clock, test_time_in_seconds_realtime)
+{
+    // try a realclock
+    CarmaClock clock;
+    auto secondsCount = clock.nowInSeconds();
+    auto epochSeconds = duration_cast<seconds>(system_clock::now().time_since_epoch());
+    // time should match system time
+    EXPECT_EQ(epochSeconds.count(), secondsCount);
 }
