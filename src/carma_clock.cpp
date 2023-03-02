@@ -43,6 +43,7 @@ timeStampSeconds CarmaClock::nowInSeconds() const {
         if (!_is_initialized) {
             throw std::invalid_argument("Clock is not initialized!");
         }
+        // purposefully round down as this is the same behavior as chrono::duration_cast
         return (_current_time / 1000);
     } else {
         using namespace std::chrono;
