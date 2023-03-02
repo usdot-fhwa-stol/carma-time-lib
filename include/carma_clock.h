@@ -23,7 +23,9 @@
 
 namespace fwha_stol::lib::time {
 
+/** Alias for a timestamp in seconds. */
 using timeStampSeconds = uint32_t;
+/** Alias for a timestamp in milliseconds. */
 using timeStampMilliseconds = uint64_t;
 using sleepCVPair = std::pair<std::shared_ptr<std::condition_variable>, std::shared_ptr<std::mutex>>;
 using sleepValuePair = std::pair<timeStampMilliseconds, sleepCVPair>;
@@ -37,24 +39,30 @@ using sleepValuePair = std::pair<timeStampMilliseconds, sleepCVPair>;
  */
 class CarmaClock {
 public:
+    /** Create a clock instance using read time mode (default) or simulation mode */
     explicit CarmaClock(bool simulation_mode = false);
 
     ~CarmaClock() = default;
 
 public:
-    // Time interrogation
+    /** Get the current epoch time in seconds, floored */
     timeStampSeconds nowInSeconds() const;
+    /** Get the current epoch time in milliseconds */
     timeStampMilliseconds nowInMilliseconds() const;
 
 public:
-    // Time management updates
+    /** Update the clock time, only valid when in simulation mode */
     void update(timeStampMilliseconds current_time);
 
 public:
+    /** Return whether this instance is in simulation mode */
     inline bool is_simulation_mode() const {return _is_simulation_mode; };
 
+    /** Block until the clock has been initialized.  For simulations nothing should
+        happen until the clock starts. */
     void wait_for_initialization();
 
+    /** Sleep until a future point in time. */
     void sleep_until(timeStampMilliseconds future_time);
 
 private:
