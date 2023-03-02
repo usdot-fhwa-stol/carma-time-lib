@@ -38,6 +38,18 @@ timeStampMilliseconds CarmaClock::nowInMilliseconds() const {
     }
 }
 
+timeStampSeconds CarmaClock::nowInSeconds() const {
+    if (_is_simulation_mode) {
+        if (!_is_initialized) {
+            throw std::invalid_argument("Clock is not initialized!");
+        }
+        return (_current_time / 1000);
+    } else {
+        using namespace std::chrono;
+        return duration_cast< seconds>(system_clock::now().time_since_epoch()).count();
+    }
+}
+
 void CarmaClock::update(timeStampMilliseconds current_time) {
     _current_time = current_time;
     if (!_is_initialized) {

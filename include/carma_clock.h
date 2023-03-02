@@ -43,7 +43,7 @@ public:
 
 public:
     // Time interrogation
-    timeStampSeconds nowInSeconds();
+    timeStampSeconds nowInSeconds() const;
     timeStampMilliseconds nowInMilliseconds() const;
 
 public:
