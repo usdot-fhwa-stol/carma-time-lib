@@ -39,6 +39,20 @@ TEST(test_carma_clock, test_system_time_sleep_until)
     EXPECT_NEAR(SYSTEM_SLEEP_TIME, msCount, 5);
 }
 
+TEST(test_carma_clock, test_system_time_update_exception)
+{
+    // try a real clock
+    CarmaClock clock;
+    bool execptionThrown = false;
+    try {
+        clock.update(0);
+    } catch (std::exception & e) {
+        // should not be able to update system clock
+        execptionThrown = true;
+    }
+    EXPECT_TRUE(execptionThrown);
+}
+
 TEST(test_carma_clock, test_sim_time_initialization)
 {
     // try a sim clock
