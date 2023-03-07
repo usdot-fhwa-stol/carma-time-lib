@@ -52,6 +52,10 @@ timeStampSeconds CarmaClock::nowInSeconds() const {
 }
 
 void CarmaClock::update(timeStampMilliseconds current_time) {
+    // check for sim time and throw exception if not in sim
+    if (!_is_simulation_mode) {
+        throw std::invalid_argument("Clock is not in simulation mode!");
+    }
     _current_time = current_time;
     if (!_is_initialized) {
         // if not initialized then do it and let anyone waiting know
