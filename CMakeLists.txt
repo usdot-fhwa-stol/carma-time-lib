@@ -10,7 +10,7 @@ project(carma-clock
     DESCRIPTION "CARMA time library"
     HOMEPAGE_URL https://github.com/usdot-fhwa-stol/carma-time-lib
 	VERSION 0.0.1
-    CXX
+    LANGUAGES CXX
 )
 find_package(Threads)
 
