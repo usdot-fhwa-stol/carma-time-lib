@@ -5,13 +5,15 @@ set(CMAKE_MODULE_PATH "$ENV{CARMA_OPT_DIR}/cmake")
 # Required for std::lock and syntax
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Threads)
 
 project(carma-clock
     DESCRIPTION "CARMA time library"
     HOMEPAGE_URL https://github.com/usdot-fhwa-stol/carma-time-lib
 	VERSION 0.0.1
+    CXX
 )
+find_package(Threads)
+
 
 add_library(${PROJECT_NAME} SHARED)
 set_target_properties(${PROJECT_NAME} PROPERTIES
