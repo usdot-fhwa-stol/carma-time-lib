@@ -13,6 +13,7 @@ project(carma-clock
     LANGUAGES CXX
 )
 find_package(Threads)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 
 add_library(${PROJECT_NAME} SHARED)
