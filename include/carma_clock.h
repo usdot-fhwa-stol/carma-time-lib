@@ -20,8 +20,6 @@
 #include <condition_variable>
 #include <mutex>
 #include <vector>
-// Used for cout statemtents for debugging
-// #include <iostream>
 
 namespace fwha_stol::lib::time {
 
@@ -66,6 +64,7 @@ public:
 
     /** Sleep until a future point in time. */
     void sleep_until(timeStampMilliseconds future_time);
+
     /**
      * @brief Sleep for time_to_sleep in milliseconds.
      * @param time_to_sleep milliseconds from current time to sleep for.
@@ -81,10 +80,8 @@ private:
 
     // Initialization variables
     bool _is_initialized;
-    // Vector of conditional_variable mutex pairs to handle multiple threads waiting on initialization
-    std::vector< sleepCVPair> _initialization_cv_pairs;
-    // Mutex for vector of conditional variable mutex pairs
     std::mutex _initialization_mutex;
+    std::condition_variable _initialization_cv;
 
     // sleep related items
     std::mutex _sleep_mutex;

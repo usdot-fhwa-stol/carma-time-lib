@@ -58,19 +58,11 @@ void CarmaClock::update(timeStampMilliseconds current_time) {
     }
     _current_time = current_time;
     if (!_is_initialized) {
-        std::unique_lock init_lk( _initialization_mutex );
-        // std::cout << "Number of threads waiting on initialization : " << std::to_string(_initialization_cv_pairs.size()) << std::endl;
-        for (auto iter = _initialization_cv_pairs.begin(); iter != _initialization_cv_pairs.end(); )
-        {
-            // Notify thread and remove pair
-            std::unique_lock lock(*iter->second);
-            iter->first->notify_one();
-            iter = _initialization_cv_pairs.erase(iter);
-            // std::cout << "Number of threads waiting on initialization : " << std::to_string(_initialization_cv_pairs.size()) << std::endl;
-
-        }   
-        // Once all waiting threads have been notified
+        // if not initialized then do it and let anyone waiting know
         _is_initialized = true;
+        std::unique_lock lock(_initialization_mutex);
+        // Notify all blocked threads
+        _initialization_cv.notify_all();
     }
     // check to see if any sleeping threads need to be woken
     std::unique_lock lk(_sleep_mutex);
@@ -89,20 +81,8 @@ void CarmaClock::update(timeStampMilliseconds current_time) {
 
 void CarmaClock::wait_for_initialization() {
     if (!_is_initialized) {
-        
-        // create the CV and mutex to use
-        sleepCVPair initializationCVPair = std::make_pair(
-            std::make_shared<std::condition_variable>(),
-            std::make_shared<std::mutex>()
-        );
-        {
-            // Lock vector for modification and add pair
-            std::unique_lock lk(_initialization_mutex);
-            _initialization_cv_pairs.emplace_back(initializationCVPair);
-        }
-        // Set lock pair for modification and set thread to wait for initialization
-        std::unique_lock lock(*initializationCVPair.second);
-        initializationCVPair.first->wait(lock);
+        std::unique_lock lock(_initialization_mutex);
+        _initialization_cv.wait(lock, [this] { return _is_initialized; });
     }
 }
 
