@@ -61,7 +61,8 @@ void CarmaClock::update(timeStampMilliseconds current_time) {
         // if not initialized then do it and let anyone waiting know
         _is_initialized = true;
         std::unique_lock lock(_initialization_mutex);
-        _initialization_cv.notify_one();
+        // Notify all blocked threads
+        _initialization_cv.notify_all();
     }
     // check to see if any sleeping threads need to be woken
     std::unique_lock lk(_sleep_mutex);
@@ -83,6 +84,10 @@ void CarmaClock::wait_for_initialization() {
         std::unique_lock lock(_initialization_mutex);
         _initialization_cv.wait(lock, [this] { return _is_initialized; });
     }
+}
+
+void CarmaClock::sleep_for(timeStampMilliseconds time_to_sleep) {
+    sleep_until( _current_time + time_to_sleep);
 }
 
 void CarmaClock::sleep_until(timeStampMilliseconds future_time) {
