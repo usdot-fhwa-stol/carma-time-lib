@@ -10,7 +10,7 @@ jobs:
       matrix:
         include:
           - architecture: x64
-            ubuntu: focal
+            ubuntu: bionic
             build: true
           - architecture: x64
             ubuntu: jammy
