@@ -7,9 +7,8 @@ The CARMA Time Library is a focused library providing classes and utilities whic
 These badges are for the default branch only.
 
 [![Build Workflow](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/build.yml/badge.svg)](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/build.yml)
-
-[![Sonar Workflow](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/sonar-scanner.yml/badge.svg)](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/sonar-scanner.yml)
-
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=usdot-fhwa-stol_carma-time-lib&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=usdot-fhwa-stol_carma-time-lib)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=usdot-fhwa-stol_carma-time-lib&metric=coverage)](https://sonarcloud.io/summary/new_code?id=usdot-fhwa-stol_carma-time-lib)
 # Architecture
 
 The CarmaClock class contains an internal representation for time which serves as a replacement for the epoch tracked by the system clock, or any other related time-keeping machinery.
