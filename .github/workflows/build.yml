@@ -22,11 +22,14 @@ jobs:
             ubuntu: jammy
             build: true
           - architecture: armhf
+            ubuntu: focal
+            build: false
+          - architecture: armhf
             ubuntu: jammy
             build: true
           - architecture: arm64
             ubuntu: focal
-            build: true
+            build: false
           - architecture: arm64
             ubuntu: jammy
             build: true
