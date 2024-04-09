@@ -1,14 +1,21 @@
 name: Build Workflow
 
 on:
-  pull_request:
   push:
-
+   branches:
+     - 'master'
+     - 'develop'
+     - 'release/*'
+  pull_request:
+      types: [opened, synchronize, reopened]
 jobs:
   build-package:
     strategy:
       matrix:
         include:
+          - architecture: x64
+            ubuntu: bionic
+            build: true
           - architecture: x64
             ubuntu: focal
             build: true

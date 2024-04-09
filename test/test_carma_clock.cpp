@@ -10,7 +10,7 @@ using namespace std::chrono;
 constexpr int SYSTEM_SLEEP_TIME = 150;
 
 TEST(test_carma_clock, test_system_time_initialization)
-{
+{   
     // try a real clock
     CarmaClock clock;
     auto start = system_clock::now();
@@ -57,17 +57,58 @@ TEST(test_carma_clock, test_sim_time_initialization)
 {
     // try a sim clock
     CarmaClock clock(true);
+    // Measure start time
+    auto start = system_clock::now();
+    // Thread sleep for SYSTEM_SLEEP_TIME milliseconds before initializing clock
     std::thread t([&clock]() {
         std::this_thread::sleep_for(std::chrono::milliseconds(SYSTEM_SLEEP_TIME));
         clock.update(1);
+
     });
-    auto start = system_clock::now();
+    // blocks until clock initialized
     clock.wait_for_initialization();
+    // Measure end time
     auto after = system_clock::now();
     auto msCount = duration_cast<milliseconds>(after - start).count();
     // should have happened after the update occurred in other thread
     EXPECT_NEAR(SYSTEM_SLEEP_TIME, msCount, 10);
     t.join();
+
+}
+
+TEST(test_carma_clock, test_sim_time_initialization_multiple_threads)
+{
+    // try a sim clock
+    CarmaClock clock(true);
+    // Measure start time
+    auto start = system_clock::now();
+    // Thread sleep for SYSTEM_SLEEP_TIME milliseconds before initializing clock
+    std::thread update([&clock]() {
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYSTEM_SLEEP_TIME));
+        clock.update(1);
+
+    });
+    // Three threads wait on initialization
+    std::thread t1([&clock]() {
+        clock.wait_for_initialization();
+    });
+    std::thread t2([&clock]() {
+        clock.wait_for_initialization();
+    });
+    std::thread t3([&clock]() {
+        clock.wait_for_initialization();
+    });
+    // Blocks until all 3 threads have been notified of initialization    
+    update.join();
+    t1.join();
+    t2.join();
+    t3.join();
+    // Measure end time
+    auto after = system_clock::now();
+    auto msCount = duration_cast<milliseconds>(after - start).count();
+    // should have happened after the update occurred in other thread
+    EXPECT_NEAR(SYSTEM_SLEEP_TIME, msCount, 10);
+   
 }
 
 TEST(test_carma_clock, test_sim_time_initialization_early)
@@ -79,6 +120,7 @@ TEST(test_carma_clock, test_sim_time_initialization_early)
         std::this_thread::sleep_for(std::chrono::milliseconds(SYSTEM_SLEEP_TIME));
     });
     auto start = system_clock::now();
+
     clock.wait_for_initialization();
     auto after = system_clock::now();
     auto msCount = duration_cast<milliseconds>(after - start).count();
@@ -141,6 +183,25 @@ TEST(test_carma_clock, test_sim_time_sleep_until)
     EXPECT_EQ(simTimeNow, 1);
     auto start = system_clock::now();
     clock.sleep_until(simTimeNow + 1);
+    auto after = system_clock::now();
+    auto msCount = duration_cast<milliseconds>(after - start).count();
+    t.join();
+    // should have happened after the update occurred in other thread
+    EXPECT_NEAR(SYSTEM_SLEEP_TIME, msCount, 5);
+}
+
+TEST( test_carma_clock, test_sim_time_sleep_for) {
+    CarmaClock clock(true);
+    clock.update(1);
+    
+    auto simTimeNow = clock.nowInMilliseconds();
+    EXPECT_EQ(simTimeNow, 1);
+    auto start = system_clock::now();
+    std::thread t([&clock]() {
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYSTEM_SLEEP_TIME));
+        clock.update(2);
+    });
+    clock.sleep_for(1);
     auto after = system_clock::now();
     auto msCount = duration_cast<milliseconds>(after - start).count();
     t.join();
