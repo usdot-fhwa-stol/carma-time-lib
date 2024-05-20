@@ -21,6 +21,7 @@
 #include <mutex>
 #include <vector>
 
+
 namespace fwha_stol::lib::time {
 
 /** Alias for a timestamp in seconds. */
@@ -48,6 +49,11 @@ public:
      * @brief Destructor
     */
     ~CarmaClock() = default;
+    // Public move constructor and move assignment operator
+    CarmaClock(const CarmaClock&) = delete; // Deleted copy constructor
+    CarmaClock& operator=(const CarmaClock&) = delete; // Deleted copy assignment operator
+    CarmaClock(CarmaClock&&) = delete; // Deleted move constructor
+    CarmaClock& operator=(CarmaClock&&) = delete; // Deleted move assignment operator
 
 public:
     /**
