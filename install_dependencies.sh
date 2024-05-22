@@ -1,5 +1,5 @@
 #!/bin/sh
 
-set -ex
+set -x
 # Get ubuntu distribution code name. All STOL APT debian packages are pushed to S3 bucket based on distribution codename.
-apt install -y python3-dev && true
+/opt/carma/scripts/install_dependencies_script.sh python3-dev
