@@ -10,13 +10,13 @@ class TestCarmaClock(unittest.TestCase):
     def testSimClockInitializeException(self):
         sim_clock = carma_clockd.CarmaClock(True)
         with self.assertRaises(ValueError) as e:
-            time = sim_clock.nowInMilliseconds()
+            sim_clock.nowInMilliseconds()
         
-        self.assertTrue('Clock is not initialized!' in str(e.exception))
+        self.assertIn('Clock is not initialized!',str(e.exception))
 
     def testRealClockTime(self):
         clock = carma_clockd.CarmaClock()
-        self.assertAlmostEqual(round(time.time()*1000), clock.nowInMilliseconds(),delta=10)
+        self.assertAlmostEqual(time.time()*1000, clock.nowInMilliseconds(),delta=10)
 
     def testSimClockUpdate(self):
         sim_clock = carma_clockd.CarmaClock(True)
