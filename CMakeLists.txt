@@ -13,10 +13,9 @@ project(carma_clock
     LANGUAGES CXX
 )
 include(cmake/dependencies.cmake)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-# add_definitions(-DPYBIND)
 
 add_library(${PROJECT_NAME} SHARED )
+
 target_include_directories(${PROJECT_NAME} 
   PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -26,6 +25,7 @@ target_link_libraries( ${PROJECT_NAME} PUBLIC
     pybind11::module
 
 )
+# Trip library name and add extension
 pybind11_strip(${PROJECT_NAME})
 pybind11_extension(${PROJECT_NAME})
 set_target_properties(${PROJECT_NAME} PROPERTIES
