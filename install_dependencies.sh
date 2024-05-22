@@ -2,5 +2,5 @@
 
 set -ex
 # apt update
-apt install -y python3-dev 
+apt install -y python3 
 # TODO
