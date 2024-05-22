@@ -25,7 +25,7 @@ target_link_libraries( ${PROJECT_NAME} PUBLIC
     pybind11::module
 
 )
-# Trip library name and add extension
+# Strip library name and add extension
 pybind11_strip(${PROJECT_NAME})
 pybind11_extension(${PROJECT_NAME})
 set_target_properties(${PROJECT_NAME} PROPERTIES
