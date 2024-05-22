@@ -1,0 +1,5 @@
+find_package(Threads)
+find_package(Python3 COMPONENTS Interpreter Development)
+include(GetCPM)
+set(CPM_USE_LOCAL_PACKAGES ON)
+CPMAddPackage("gh:pybind/pybind11#v2.12.0")
