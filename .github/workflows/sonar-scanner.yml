@@ -11,6 +11,9 @@ on:
 name: Sonar Workflow
 jobs:
   sonarcloud:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/usdot-fhwa-stol/carma-builds-x64:jammy
     uses: usdot-fhwa-stol/actions/.github/workflows/sonar-scanner-cpp.yml@main
     with:
       sonar-project-key: usdot-fhwa-stol_carma-time-lib
