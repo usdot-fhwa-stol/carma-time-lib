@@ -3,9 +3,9 @@ import unittest
 import carma_clockd
 import time
 
-    """Test Case for testing basic CarmaClock functionality in python
-    """
-    class TestCarmaClock(unittest.TestCase):
+"""Test Case for testing basic CarmaClock functionality in python
+"""
+class TestCarmaClock(unittest.TestCase):
 
     def testSimClockInitializeException(self):
         sim_clock = carma_clockd.CarmaClock(True)
