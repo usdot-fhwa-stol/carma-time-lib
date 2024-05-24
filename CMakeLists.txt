@@ -12,34 +12,36 @@ project(carma_clock
 	VERSION 0.0.1
     LANGUAGES CXX
 )
-include(cmake/dependencies.cmake)
 
+include(cmake/dependencies.cmake)
 add_library(${PROJECT_NAME} SHARED )
 
 target_include_directories(${PROJECT_NAME} 
   PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
-target_link_libraries( ${PROJECT_NAME} PUBLIC
-    Python3::Python
-    pybind11::module
 
-)
-# Strip library name and add extension
-pybind11_strip(${PROJECT_NAME})
-pybind11_extension(${PROJECT_NAME})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     SOVERSION 1
 )
 
 include(CommonSource)
+if (DEFINED ENV{BUILD_ARCHITECTURE})
+    if ($ENV{BUILD_ARCHITECTURE} STREQUAL "x64") 
+        message(STATUS "Building Python Module binding only supported for x64 builds...")
+        add_subdirectory(carma_clock_py)
+    else() 
+        message(STATUS "Building Python Module binding NOT supported for " ${BUILD_ARCHITECTURE} " builds...")
+    endif()
+else()
+    message(STATUS "Enviroment variable for BUILD_ARCHITECTURE is not set. Skipping Python Module binding ")
+endif()
+
+# message(STATUS "Building Python Module binding only supported for x64 builds...")
 include(Testing)
-#Test for Python inclusion
-enable_testing()
-FILE(COPY python_wrapper_test.py DESTINATION .)
-ADD_TEST(NAME python_wrapper_test COMMAND ${PYTHON_EXECUTABLE} python_wrapper_test.py)
 include(CodeCoverage)
 include(InstallingGeneral)
-set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "")
 include(InstallingConfigs)
 include(Packing)
+
+

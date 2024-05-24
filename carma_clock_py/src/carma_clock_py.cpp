@@ -1,9 +1,9 @@
 #include <pybind11/pybind11.h>
 
-#include "carma_clock.h"
+#include <carma_clock.h>
 namespace py = pybind11;
 
-PYBIND11_MODULE(carma_clock, m) {
+PYBIND11_MODULE(carma_clock_py, m) {
     py::class_<fwha_stol::lib::time::CarmaClock>(m, "CarmaClock")
         .def(py::init<bool>(), py::arg("simulation_mode")=false)
         .def("nowInSeconds", &fwha_stol::lib::time::CarmaClock::nowInSeconds)
