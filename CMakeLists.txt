@@ -27,14 +27,14 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 include(CommonSource)
 if (DEFINED ENV{BUILD_ARCHITECTURE})
-    if ($ENV{BUILD_ARCHITECTURE} STREQUAL "x64") 
-        message(STATUS "Building Python Module binding only supported for x64 builds...")
-        add_subdirectory(carma_clock_py)
-    else() 
-        message(STATUS "Building Python Module binding NOT supported for " ${BUILD_ARCHITECTURE} " builds...")
+    if ($ENV{BUILD_ARCHITECTURE} MATCHES "arm*") 
+        message(STATUS "Building Python Module binding NOT supported for crosss compiling " $ENV{BUILD_ARCHITECTURE} " builds...")
     endif()
+    message(STATUS "Building Python Module binding NOT supported for crosss compiling " $ENV{BUILD_ARCHITECTURE} " builds...")
+
 else()
-    message(STATUS "Enviroment variable for BUILD_ARCHITECTURE is not set. Skipping Python Module binding ")
+    message(STATUS "Building Python Module binding only supported for native x64 builds...")
+    add_subdirectory(carma_clock_py)
 endif()
 
 # message(STATUS "Building Python Module binding only supported for x64 builds...")
