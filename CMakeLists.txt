@@ -25,22 +25,32 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     SOVERSION 1
 )
 
-include(CommonSource)
 if (DEFINED ENV{BUILD_ARCHITECTURE})
-    if ($ENV{BUILD_ARCHITECTURE} MATCHES "arm*") 
-        message(STATUS "Building Python Module binding NOT supported for crosss compiling " $ENV{BUILD_ARCHITECTURE} " builds...")
-    endif()
     message(STATUS "Building Python Module binding NOT supported for crosss compiling " $ENV{BUILD_ARCHITECTURE} " builds...")
 else()
+    include(carma_clock_py/cmake/dependencies.cmake)
+    target_link_libraries( ${PROJECT_NAME} PUBLIC
+        Python3::Python
+        pybind11::module
+    )
     message(STATUS "Building Python Module binding only supported for native x64 builds...")
-    add_subdirectory(carma_clock_py)
+    # set up sources based on target name
+    target_sources (${PROJECT_NAME}
+        PRIVATE
+            carma_clock_py/src/carma_clock_py.cpp
+    )
+    FILE(COPY carma_clock_py/python_wrapper_test.py DESTINATION .)
+    add_test(NAME test_carma_clock_python_module_binding COMMAND ${PYTHON_EXECUTABLE} python_wrapper_test.py )
 endif()
 
-# message(STATUS "Building Python Module binding only supported for x64 builds...")
+include(CommonSource)
 include(Testing)
 include(CodeCoverage)
 include(InstallingGeneral)
 include(InstallingConfigs)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS carma-clock-1 python3-dev)
+set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "")
+
 include(Packing)
 
 
