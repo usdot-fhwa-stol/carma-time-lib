@@ -1,10 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 set -ex
+# export BUILD_ARCHITECTURE=arm64
 # Get ubuntu distribution code name. All STOL APT debian packages are pushed to S3 bucket based on distribution codename.
 echo "BUILD_ARCHITECTURE=${BUILD_ARCHITECTURE}"
-if [[ "${BUILD_ARCHITECTURE}" == "x64" ]]; then
-    /opt/carma/script/install_dependencies_script.sh python3-dev
+if [[ "${BUILD_ARCHITECTURE}" =~ arm* ]]; then
+    echo "WARNING: Python module support currently only exists for native x64 builds. Skipping Python module binding ... "
 else
-    echo "NOTE: Python module support currently only exists for x64 builds. Only building C++ library ... "
+    /opt/carma/scripts/install_dependencies_script.sh python3-dev
 fi

@@ -31,7 +31,6 @@ if (DEFINED ENV{BUILD_ARCHITECTURE})
         message(STATUS "Building Python Module binding NOT supported for crosss compiling " $ENV{BUILD_ARCHITECTURE} " builds...")
     endif()
     message(STATUS "Building Python Module binding NOT supported for crosss compiling " $ENV{BUILD_ARCHITECTURE} " builds...")
-
 else()
     message(STATUS "Building Python Module binding only supported for native x64 builds...")
     add_subdirectory(carma_clock_py)
