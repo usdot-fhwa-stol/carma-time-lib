@@ -27,7 +27,7 @@ jobs:
             build: false
           - architecture: armhf
             ubuntu: jammy
-            build: false
+            build: true
           - architecture: arm64
             ubuntu: focal
             build: false
