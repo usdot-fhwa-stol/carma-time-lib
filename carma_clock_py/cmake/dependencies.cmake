@@ -1,8 +1,6 @@
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 include(GetCPM)
 set(CPM_USE_LOCAL_PACKAGES ON)
-set(PYBIND11_INSTALL ON) 
-set(PYBIND11_TEST OFF) 
 CPMAddPackage(
     NAME pybind11
     GITHUB_REPOSITORY pybind/pybind11
