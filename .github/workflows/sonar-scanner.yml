@@ -11,9 +11,10 @@ on:
 name: Sonar Workflow
 jobs:
   sonarcloud:
-    uses: usdot-fhwa-stol/actions/.github/workflows/sonar-scanner-cpp.yml@main
+    uses: usdot-fhwa-stol/actions/.github/workflows/sonar-scanner-cpp.yml@fix-coverage
     with:
       sonar-project-key: usdot-fhwa-stol_carma-time-lib
+      build-image-tag: jammy
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       sonarcloud-token: ${{ secrets.SONAR_TOKEN }}
