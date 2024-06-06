@@ -12,7 +12,7 @@ These badges are for the default branch only.
 
 ## Using the Library
 
-The following sections will describe how to use the CARMA Time Library in you C++ or Python application
+The following sections will describe how to use the CARMA Time Library in your C++ or Python application
 
 ### Install library
 
@@ -22,8 +22,10 @@ The easiest way to include the CARMA Time Library in your application is to inst
 - Ubuntu ( jammy, focal, bionic )
 - CMake 3.10
 - Python 3
-The CARMA Time library is one the the FHWA (Federal Highway Administration) STOL (Saxton Transportation Operation Library) libraries build into a Debian package via CMake/CPack scripts from the [carma-builds](https://github.com/usdot-fhwa-stol/carma-builds) repository. CI (Continuous Integration) scrips also push this Debain package to a STOL Debian Package repository. To install this package you must only add this repository to `apt`.
-```
+
+The CARMA Time library is one the the FHWA (Federal Highway Administration) STOL (Saxton Transportation Operation Library) libraries built into a Debian package via CMake/CPack scripts from the [carma-builds](https://github.com/usdot-fhwa-stol/carma-builds) repository. CI (Continuous Integration) scripts also push this Debian package to a STOL Debian Package repository. To install this package you must only add this repository to `apt`.
+
+```shell
 # Get ubuntu distribution code name. All STOL APT debian packages are pushed to S3 bucket based on distribution codename.
 . /etc/lsb-release
 # add the STOL APT repository
@@ -31,6 +33,7 @@ echo "deb [trusted=yes] http://s3.amazonaws.com/stol-apt-repository ${DISTRIB_CO
 apt update
 apt install carma-clock-1
 ```
+
 This steps above add the relavent STOL apt repository for pulling correct debian package.
 
 ### Including with CMake (C++)
