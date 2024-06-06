@@ -62,7 +62,7 @@ if (${BUILD_PYTHON_BINDINGS})
     FILE(COPY carma_clock_py/python_wrapper_test.py DESTINATION .)
     add_test(NAME test_carma_clock_python_module_binding COMMAND ${PYTHON_EXECUTABLE} python_wrapper_test.py )
     # set cpack depedencies
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS carma-clock-1 python3-dev)
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS python3-dev)
     # remove debug post fix for library. Required due to import naming for python module import
     set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "")
 endif()

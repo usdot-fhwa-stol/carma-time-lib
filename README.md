@@ -2,13 +2,85 @@
 
 The CARMA Time Library is a focused library providing classes and utilities which enable a consuming project to synchronize mock time with the CARMA simulation framework.
 
-# CI Status
+## CI Status
 
 These badges are for the default branch only.
 
 [![Build Workflow](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/build.yml/badge.svg)](https://github.com/usdot-fhwa-stol/carma-time-lib/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=usdot-fhwa-stol_carma-time-lib&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=usdot-fhwa-stol_carma-time-lib)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=usdot-fhwa-stol_carma-time-lib&metric=coverage)](https://sonarcloud.io/summary/new_code?id=usdot-fhwa-stol_carma-time-lib)
+
+## Using the Library
+
+The following sections will describe how to use the CARMA Time Library in your C++ or Python application
+
+### Install library
+
+The easiest way to include the CARMA Time Library in your application is to install it via `apt`.
+**Prerequisites**
+
+- Ubuntu ( jammy, focal, bionic )
+- CMake 3.10
+- Python 3
+
+The CARMA Time library is one the the FHWA (Federal Highway Administration) STOL (Saxton Transportation Operation Library) libraries built into a Debian package via CMake/CPack scripts from the [carma-builds](https://github.com/usdot-fhwa-stol/carma-builds) repository. CI (Continuous Integration) scripts also push this Debian package to a STOL Debian Package repository. To install this package you must only add this repository to `apt`.
+
+```shell
+# Get ubuntu distribution code name. All STOL APT debian packages are pushed to S3 bucket based on distribution codename.
+. /etc/lsb-release
+# add the STOL APT repository
+echo "deb [trusted=yes] http://s3.amazonaws.com/stol-apt-repository ${DISTRIB_CODENAME} main" > /etc/apt/sources.list.d/stol-apt-repository.list
+apt update
+apt install carma-clock-1
+```
+
+This steps above add the relavent STOL apt repository for pulling correct debian package.
+
+### Including with CMake (C++)
+To find and link this library via CMake the following commands are necessary
+
+```cmake
+cmake_minimum_required(VERSION 3.10.2)
+...
+# This can be set inside CMake files or via argument passed to cmake CLI calls
+list(APPEND CMAKE_MODULE_PATH "/opt/carma/cmake")
+...
+# Find CMake package
+find_package(carma-clock REQUIRED)
+...
+# Link against library
+target_link_libraries( ${PROJECT_NAME} PUBLIC
+    ::carma-clock
+
+)
+```
+
+### Importing as Python Module
+> [!IMPORTANT]\
+>Python module support is currently only available for x86/amd devices
+To import this library as a python module the following is necessary
+
+```python
+# This path can be added via the sys module or by directly appending the PYTHON_PATH environment variable.
+import sys
+sys.path.append('/opt/carma/lib/')
+# Import module
+import libcarma_clock
+...
+# Initialize CARMA Clock object
+clock = libcarma_clock.CarmaClock(False)
+
+```
+
+## Configuration
+
+The following operating modes are available in the library:
+* Real-time
+* Simulated time
+
+TODO How the library is configured
+
+TODO Move this configuration logic into a time manager tool in a separate library.
 # Architecture
 
 The CarmaClock class contains an internal representation for time which serves as a replacement for the epoch tracked by the system clock, or any other related time-keeping machinery.
@@ -72,22 +144,6 @@ Some additional configurations are provided out-of-the-box to streamline the dev
 | install_dependencies.sh               | Docker Dev Environment internal script. TODO move this file?                                                         |  |  |  |
 | .vscode/tasks.json                    | Build task definition utilizing Docker Dev Environment.                                                              |  |  |  |
 
-## Deploying
-TODO
-# Using the Library
-## Dependency Management
-TODO
-## Linking Against the Library
-TODO
-## Configuration
-
-The following operating modes are available in the library:
-* Real-time
-* Simulated time
-
-TODO How the library is configured
-
-TODO Move this configuration logic into a time manager tool in a separate library.
 
 # CARMA Projects
 
