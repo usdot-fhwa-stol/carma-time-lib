@@ -26,8 +26,9 @@ PYBIND11_MODULE(libcarma_clock, m)
         .def("is_simulation_mode", &fwha_stol::lib::time::CarmaClock::is_simulation_mode, 
             R"(Return True if simulation mode set to True and False if not.)")
         .def("wait_for_initialization", &fwha_stol::lib::time::CarmaClock::wait_for_initialization,
-            R"(Method will block thread until update() is called on CarmaClock. Only 
-            valid for simulation mode True)")
+            R"(Method will block thread until update() is called on CarmaClock. 
+            This method should be called once before any calls to sleep or now methods
+            to ensure that time has a value.)")
         .def("sleep_until", &fwha_stol::lib::time::CarmaClock::sleep_until, py::arg("future_time"),
             R"(Method will block thread until given time (ms))")
         .def("sleep_for", &fwha_stol::lib::time::CarmaClock::sleep_for, py::arg("time_to_sleep"),
