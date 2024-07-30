@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import unittest
-import libcarma_clock
+import importlib
+libcarma_clock = importlib.import_module("libcarma-clock")
+# import libcarma_clock
 import time
 
 """Test Case for testing basic CarmaClock functionality in python
