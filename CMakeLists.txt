@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH "$ENV{CARMA_OPT_DIR}/cmake")
 set(CMAKE_CXX_STANDARD 17)
 
 
-project(carma_clock
+project(carma-clock
     DESCRIPTION "CARMA time library"
     HOMEPAGE_URL https://github.com/usdot-fhwa-stol/carma-time-lib
 	VERSION 0.0.1
