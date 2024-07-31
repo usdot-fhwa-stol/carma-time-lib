@@ -67,7 +67,7 @@ target_link_libraries( ${PROJECT_NAME} PUBLIC
 ### Importing as Python Module
 > [!IMPORTANT]\
 >Python module support is currently only available for x86/amd devices
-To import this library as a python module the following is necessary. A
+To import this library as a python module the following is necessary.
 
 ```python
 # This path can be added via the sys module or by directly appending the PYTHON_PATH environment variable.
