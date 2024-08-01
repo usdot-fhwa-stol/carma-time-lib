@@ -73,8 +73,10 @@ To import this library as a python module the following is necessary.
 # This path can be added via the sys module or by directly appending the PYTHON_PATH environment variable.
 import sys
 sys.path.append('/path/to/library')
-# Import module
-import libcarma_clock
+# Import C++ library as python module
+import importlib
+libcarma_clock = importlib.import_module("libcarma-clock")
+
 ...
 # Initialize CARMA Clock object
 clock = libcarma_clock.CarmaClock(False)
