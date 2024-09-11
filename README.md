@@ -35,6 +35,15 @@ apt install carma-clock-1
 ```
 
 This steps above add the relavent STOL apt repository for pulling correct debian package.
+> [!IMPORTANT]\
+>The python bindings for **CARMA Time Lib** are not included by default in the debian package. To install this library for use
+with python we suggest you install it locally with the following steps
+
+```shell
+./install_dependencies.sh
+cmake -Bbuild -DBUILD_PYTHON_BINDINGS=ON .
+cmake --build build
+```
 
 ### Including with CMake (C++)
 To find and link this library via CMake the following commands are necessary
@@ -58,14 +67,16 @@ target_link_libraries( ${PROJECT_NAME} PUBLIC
 ### Importing as Python Module
 > [!IMPORTANT]\
 >Python module support is currently only available for x86/amd devices
-To import this library as a python module the following is necessary
+To import this library as a python module the following is necessary.
 
 ```python
 # This path can be added via the sys module or by directly appending the PYTHON_PATH environment variable.
 import sys
-sys.path.append('/opt/carma/lib/')
-# Import module
-import libcarma_clock
+sys.path.append('/path/to/library')
+# Import C++ library as python module
+import importlib
+libcarma_clock = importlib.import_module("libcarma-clock")
+
 ...
 # Initialize CARMA Clock object
 clock = libcarma_clock.CarmaClock(False)

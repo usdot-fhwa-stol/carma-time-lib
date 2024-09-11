@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH "$ENV{CARMA_OPT_DIR}/cmake")
 set(CMAKE_CXX_STANDARD 17)
 
 
-project(carma_clock
+project(carma-clock
     DESCRIPTION "CARMA time library"
     HOMEPAGE_URL https://github.com/usdot-fhwa-stol/carma-time-lib
 	VERSION 0.0.1
@@ -15,7 +15,7 @@ project(carma_clock
 
 option(BUILD_PYTHON_BINDINGS 
     "BUILD PYTHON BINDINGS is used to configure whether or not to including building python module bindings into the cmake build process.
-     **NOTE** Build python bindings is currently only support for native builds (not supported for cross-compile builds) " ON)
+     **NOTE** Build python bindings is currently only support for native builds (not supported for cross-compile builds) " OFF)
 
 include(cmake/dependencies.cmake)
 add_library(${PROJECT_NAME} SHARED )
