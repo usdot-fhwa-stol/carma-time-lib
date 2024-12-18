@@ -16,6 +16,8 @@ project(carma-clock
 option(BUILD_PYTHON_BINDINGS 
     "BUILD PYTHON BINDINGS is used to configure whether or not to including building python module bindings into the cmake build process.
      **NOTE** Build python bindings is currently only support for native builds (not supported for cross-compile builds) " OFF)
+option(BUILD_TESTS "Build tests" OFF)
+option(CREATE_DEB_PACKAGE "Create Debian Package" OFF)
 
 include(cmake/dependencies.cmake)
 add_library(${PROJECT_NAME} SHARED )
@@ -30,8 +32,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 include(CommonSource)
-include(Testing)
-include(CodeCoverage)
+if (BUILD_TESTS)
+    include(Testing)
+    include(CodeCoverage)
+endif()
 include(InstallingGeneral)
 include(InstallingConfigs)
 
@@ -60,14 +64,19 @@ if (${BUILD_PYTHON_BINDINGS})
     )
     # set up test for python module binding 
     FILE(COPY carma_clock_py/python_wrapper_test.py DESTINATION .)
-    add_test(NAME test_carma_clock_python_module_binding COMMAND ${PYTHON_EXECUTABLE} python_wrapper_test.py )
+    if (BUILD_TESTS)
+
+        add_test(NAME test_carma_clock_python_module_binding COMMAND ${PYTHON_EXECUTABLE} python_wrapper_test.py )
+    endif()
+
     # set cpack depedencies
     set(CPACK_DEBIAN_PACKAGE_DEPENDS python3-dev)
     # remove debug post fix for library. Required due to import naming for python module import
     set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "")
 endif()
-
-include(Packing)
+if (CREATE_DEB_PACKAGE)
+    include(Packing)
+endif()
 
 
 
