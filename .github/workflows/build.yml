@@ -7,6 +7,7 @@ on:
      - 'master'
      - 'develop'
      - 'release/*'
+     - 'fix-architecture'
 jobs:
   build-package:
     strategy:
@@ -26,11 +27,11 @@ jobs:
             build: true
           - architecture: arm64
             ubuntu: focal
-            build: false
+            build: true
           - architecture: arm64
             ubuntu: jammy
             build: true
-    uses: usdot-fhwa-stol/actions/.github/workflows/cpp-module-build.yml@main
+    uses: usdot-fhwa-stol/actions/.github/workflows/cpp-module-build.yml@fix-architecture
     with:
       build: ${{ matrix.build }}
       build-architecture: ${{ matrix.architecture }}
