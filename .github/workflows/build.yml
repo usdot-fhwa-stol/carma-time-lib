@@ -13,6 +13,9 @@ jobs:
       matrix:
         include:
           - architecture: x64
+            ubuntu: noble
+            build: true
+          - architecture: x64
             ubuntu: focal
             build: true
           - architecture: x64
