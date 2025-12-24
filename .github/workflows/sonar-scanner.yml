@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   # Trigger analysis when pushing in master or pull requests, and when creating
   # a pull request.
   push:
@@ -14,6 +15,7 @@ jobs:
     uses: usdot-fhwa-stol/actions/.github/workflows/sonar-scanner-cpp.yml@main
     with:
       sonar-project-key: usdot-fhwa-stol_carma-time-lib
+      build-image-tag: jammy
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       sonarcloud-token: ${{ secrets.SONAR_TOKEN }}
