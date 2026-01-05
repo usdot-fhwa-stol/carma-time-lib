@@ -17,6 +17,7 @@
 #include "carma_clock.h"
 
 #include <thread>
+#include <stdexcept>
 #include <exception>
 
 namespace fwha_stol::lib::time {
