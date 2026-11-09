@@ -16,19 +16,19 @@ jobs:
             ubuntu: noble
             build: true
           - architecture: x64
-            ubuntu: focal
+            ubuntu: resolute
             build: true
           - architecture: x64
             ubuntu: jammy
             build: true
           - architecture: armhf
-            ubuntu: focal
+            ubuntu: resolute
             build: false
           - architecture: armhf
             ubuntu: jammy
             build: true
           - architecture: arm64
-            ubuntu: focal
+            ubuntu: resolute
             build: true
           - architecture: arm64
             ubuntu: jammy
