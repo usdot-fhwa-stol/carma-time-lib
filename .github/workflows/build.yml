@@ -16,7 +16,8 @@ jobs:
             ubuntu: noble
             build: true
           - architecture: x64
-            ubuntu: focal
+            ubuntu: resolute
+            build-image-tag: ci-update-ubuntu-runner-resolute
             build: true
           - architecture: x64
             ubuntu: jammy
@@ -28,7 +29,8 @@ jobs:
             ubuntu: jammy
             build: true
           - architecture: arm64
-            ubuntu: focal
+            ubuntu: resolute
+            build-image-tag: ci-update-ubuntu-runner-resolute
             build: true
           - architecture: arm64
             ubuntu: jammy
@@ -40,7 +42,7 @@ jobs:
     with:
       build: ${{ matrix.build }}
       build-architecture: ${{ matrix.architecture }}
-      build-image-tag: ${{ matrix.ubuntu }}
+      build-image-tag: ${{ matrix.build-image-tag || matrix.ubuntu }}
       component-name: ${{ matrix.ubuntu }}
     secrets:
       aws-access-key-id: ${{ secrets.APT_REPO_AWS_ACCESS_KEY_ID }}
